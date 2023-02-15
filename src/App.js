@@ -1,26 +1,27 @@
-import styled from "@emotion/styled";
-import { useState, useEffect } from "react";
-import React from "react";
+import "./App.css";
+// import Header from './components/Header'
 import Controls from "./components/Controls";
-import Header from "./components/Header";
 import TimerDisplay from "./components/TimerDisplay";
 import Button from "./components/Button";
 import Settings from "./components/settings";
+import { useState, useEffect } from "react";
+import useSound from "use-sound";
+import timesUpSfx from "./sounds/timesUp.mp3";
 
-const App = () => {
+function App() {
   const [settingsVisible, setSettingsVisible] = useState(false);
-  const [timerMode, setTimerMode] = useState("pomo");
+  const [timerMode, setTimerMode] = useState("pomo"); // options: pomo, short, long
   const [pomoLength, setPomoLength] = useState(25);
   const [shortLength, setShortLength] = useState(3);
   const [longLength, setLongLength] = useState(15);
-  const [fontPref, setFontPref] = useState("kumbh"); 
-  const [accentColor, setAccentColor] = useState("default"); 
+  const [fontPref, setFontPref] = useState("kumbh"); // options: kumbh, roboto, space
+  const [accentColor, setAccentColor] = useState("default"); // options: default, blue, purple
   const [secondsLeft, setSecondsLeft] = useState(pomoLength * 60);
   const [isActive, setIsActive] = useState(false);
   const [buttonText, setButtonText] = useState("START");
 
   const [volume, setVolume] = useState(1);
-  const [timesUp] = useState({
+  const [timesUp] = useSound(timesUpSfx, {
     volume: volume,
   });
 
@@ -34,12 +35,12 @@ const App = () => {
         clearInterval(interval);
         setIsActive(false);
         setButtonText("");
-        timesUp()
+        timesUp();
       }
 
       return () => clearInterval(interval);
     }
-  }, [isActive, secondsLeft]);
+  }, [isActive, secondsLeft, timesUp]);
 
   const toggleSettingsVisibility = (event) => {
     setSettingsVisible(!settingsVisible);
@@ -62,9 +63,10 @@ const App = () => {
       return (secondsLeft / (longLength * 60)) * 100;
     }
   };
+
   return (
-    <StyledLayout>
-      <Header title="pomodoro" />
+    <div className="pomodoro-app">
+      {/* <Header title="pomodoro" /> */}
       <Controls
         timerMode={timerMode}
         setTimerMode={setTimerMode}
@@ -89,36 +91,25 @@ const App = () => {
         setVolume={setVolume}
       />
       <Button type="settings" toggleVisibility={toggleSettingsVisibility} />
-      <Settings visible={settingsVisible}
-                toggleSettingsVisibility={toggleSettingsVisibility} 
-                pomoLength={pomoLength}
-                setPomoLength={setPomoLength}
-                shortLength={shortLength}
-                setShortLength={setShortLength}
-                longLength={longLength}
-                setLongLength={setLongLength}
-                fontPref={fontPref}
-                setFontPref={setFontPref}
-                accentColor={accentColor}
-                setAccentColor={setAccentColor}
-                closeSettings={toggleSettingsVisibility}
-                setSecondsLeft={setSecondsLeft}
-                timerMode={timerMode}
-                />
-    </StyledLayout>
+      <Settings
+        visible={settingsVisible}
+        toggleSettingsVisibility={toggleSettingsVisibility}
+        pomoLength={pomoLength}
+        setPomoLength={setPomoLength}
+        shortLength={shortLength}
+        setShortLength={setShortLength}
+        longLength={longLength}
+        setLongLength={setLongLength}
+        fontPref={fontPref}
+        setFontPref={setFontPref}
+        accentColor={accentColor}
+        setAccentColor={setAccentColor}
+        closeSettings={toggleSettingsVisibility}
+        setSecondsLeft={setSecondsLeft}
+        timerMode={timerMode}
+      />
+    </div>
   );
-};
+}
 
 export default App;
-
-const StyledLayout = styled.div`
-  background-image: url(https://i.pinimg.com/564x/7f/e9/44/7fe944ae68a19a24dae92d57e591b055.jpg);
-  background-size: 100%;
-  width: 100%;
-  height: 720px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-family: Comic Sans MS, Comic Sans, cursive;
-`;

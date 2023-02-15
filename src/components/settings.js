@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import React from "react";
 import Button from "./Button";
 
@@ -20,9 +19,8 @@ const Settings = ({
   timerMode,
 }) => {
   const colors = {
-    default: "#F87070",
-    blue: "#70F3F8",
-    purple: "#D881F8",
+    default: "#cc7259",
+    blue: "#6f6878",
   };
 
   const fonts = {
@@ -60,8 +58,8 @@ const Settings = ({
 
   if (visible) {
     return (
-      <StyledPreferences className="preferences preferences--visible">
-        <StyledPreferencesPane className="preferences__pane">
+      <div className="preferences preferences--visible">
+        <div className="preferences__pane">
           <Button
             type="close"
             buttonText="×"
@@ -69,9 +67,9 @@ const Settings = ({
           />
           <h2>Settings</h2>
           <form onSubmit={applySettings}>
-            <StyledSettingsPane className="pane__time-settings">
+            <div className="pane__time-settings">
               <h3>Time (Minutes)</h3>
-              <StyledSettingsForm action="" className="time-settings__form">
+              <div action="" className="time-settings__form">
                 <label htmlFor="pomodoro">pomodoro</label>
                 <input
                   type="number"
@@ -99,8 +97,8 @@ const Settings = ({
                   max="30"
                   defaultValue={longLength}
                 />
-              </StyledSettingsForm>
-            </StyledSettingsPane>
+              </div>
+            </div>
 
             <div className="pane__font-preference">
               <h3>Font</h3>
@@ -136,7 +134,7 @@ const Settings = ({
               </label>
             </div>
 
-            <StyledSettingsPane className="pane__color-preference">
+            <div className="pane__color-preference">
               <h3>Color</h3>
               <input
                 type="radio"
@@ -161,23 +159,11 @@ const Settings = ({
                 htmlFor="colorPref2"
                 className="color-preference__blue"
               ></label>
-
-              <input
-                type="radio"
-                id="colorPref3"
-                name="color"
-                value="purple"
-                defaultChecked={accentColor === "purple"}
-              />
-              <label
-                htmlFor="colorPref3"
-                className="color-preference__purple"
-              ></label>
-            </StyledSettingsPane>
+            </div>
             <Button type="apply" buttonText="Apply" />
           </form>
-        </StyledPreferencesPane>
-      </StyledPreferences>
+        </div>
+      </div>
     );
   }
 
@@ -185,75 +171,3 @@ const Settings = ({
 };
 
 export default Settings;
-
-const StyledPreferences = styled.div`
-  z-index: 200;
-  position: fixed;
-  display: none;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-
-  display: block;
-  animation-name: fade;
-  animation-timing-function: ease-in;
-  animation-duration: 0.15s;
-  
-  & input {
-  padding-left: 16px;
-  border: none;
-  border-radius: 10px;
-  background: var(--input-background);
-  font-family: var();
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 14px;
-  color: var(--text-dark);
-}
-& label {
-  font-family: var(--font-default);
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 12px;
-  color: var(--text-dark);
-  mix-blend-mode: normal;
-  opacity: 0.4;
-}
-`;
-const StyledPreferencesPane = styled.div`
-  top: 46px;
-  width: 327px;
-  height: 549px;
-  background: var(--background-preferences);
-  border-radius: 15px;
-
-  position: relative;
-  margin: auto;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  transition: 3.25s all ease-in-out;
-  & h2 {
-    padding: 24px 0 28px 24px;
-    border-bottom: 1px solid #e3e1e1;
-    font-family: var(--font-default);
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 20px;
-    color: var(--settings-heading);
-  }
-`;
-const StyledSettingsPane = styled.div`
-  margin-top: 28px;
-`;
-const StyledSettingsForm = styled.div`
-  margin: 18px 24px 24px 23px;
-  display: grid;
-  grid-template-columns: 50% 50%;
-  align-items: center;
-  row-gap: 8px;
-`;
